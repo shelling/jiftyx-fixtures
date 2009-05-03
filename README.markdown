@@ -1,7 +1,6 @@
 # JiftyX::Fixtures
 
-JiftyX::Fixtures loads 
-
+JiftyX::Fixtures insert fixtures into you new Jifty application database
 
 ### INSTALLATION
 
@@ -11,3 +10,6 @@ JiftyX::Fixtures loads
     make install
 
 ### COPYRIGHT 
+
+    Copyright (C) shelling <shelling@cpan.org>
+    MIT(X11) Licence
