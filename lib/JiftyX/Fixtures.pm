@@ -83,3 +83,48 @@ sub run {
 
 
 1;
+
+=head1 SYNOPSIS
+
+
+=head1 DESCRIPTION
+
+
+=head1 METHODS
+
+
+=head2 new
+
+
+=head2 app_root
+
+Invoke without args to get your application root.
+
+Give one arg to set it.
+
+
+=head2 config
+
+Give one arg which is selected from "framework", "fixtures", "execution" to get the configuration detail.
+
+Append second arg to set the configuration.
+
+    $jf->config("fixtures"); #=> { development => { dir => "etc/fixtures/development" }, test => { dir => "etc/fixtures/test" } }
+    $jf->config(
+      fixtures => {
+        development => {
+          dir => "etc/dev_fixtures"
+        },
+        test => {
+          dir => "etc/test_fixtures"
+        }
+      }
+    );
+
+=head2 fixtures_files
+
+
+=head2 run
+
+
+
