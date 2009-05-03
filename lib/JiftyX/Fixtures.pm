@@ -28,10 +28,10 @@ sub new {
   }
 
   if ($self->{config}->{execution}->{"drop-database"} eq "true") {
-    print "WARN - Database has existed, Drop it now.\n";
     my $dbconfig = $self->{config}->{framework}->{Database};
 
     if ($dbconfig->{Driver} eq "SQLite" && -e $dbconfig->{Database} ) {
+      print "WARN - SQLite Database has existed, delete file now.\n";
       unlink $dbconfig->{Database};
     }
 
