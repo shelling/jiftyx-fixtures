@@ -8,6 +8,7 @@ use Jifty;
 use Jifty::Everything;
 use Jifty::Util;
 
+use DBI;
 use File::Basename;
 use File::Spec;
 use YAML qw(Dump LoadFile);
@@ -30,9 +31,15 @@ sub new {
   if ($self->{config}->{execution}->{"drop-database"} eq "true") {
     my $dbconfig = $self->{config}->{framework}->{Database};
 
-    if ($dbconfig->{Driver} eq "SQLite" && -e $dbconfig->{Database} ) {
+    if ( $dbconfig->{Driver} eq "SQLite" && -e $dbconfig->{Database} ) {
       print "WARN - SQLite Database has existed, delete file now.\n";
       unlink $dbconfig->{Database};
+    }
+
+    if ($dbconfig->{Driver} eq "MySQL") {
+      $dbh = DBI->connect("dbi:mysql:database=".$dbconfig->{Database}, $dbconfig->{User}, $dbconfig->{Password});
+      $dbh->prepare("drop database ". $dbconfig->{Database});
+      $dbh->disconnect;
     }
 
   }
