@@ -1,0 +1,4 @@
+jiftytest
+etc/fixtures
+bin/gist*
+var/jifty-server.pid

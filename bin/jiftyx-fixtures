@@ -1,0 +1,30 @@
+#!/usr/bin/env perl
+
+use Getopt::Compact;
+use Data::Dumper;
+use JiftyX::Fixtures;
+
+BEGIN {
+  our $VERSION = 0.01;
+
+  my $opts = Getopt::Compact->new( 
+    name    => "jiftyx-fixtures",
+    version => $VERSION,
+    struct  => [
+      [ [qw(d drop-database)],  qq{drop database before loading fixtures}, "=s" ],
+      [ [qw(e environment)],    qq{specify which fixtures mode would be used}, "=s" ],
+    ],
+  )->opts();
+
+  my $jiftyx_fixtures = JiftyX::Fixtures->new(
+    execution => {
+      environment     => $opts->{environment},
+      'drop-database' => $opts->{"drop-database"},
+    }
+  );
+
+  Jifty->new;
+
+  $jiftyx_fixtures->run;
+}
+
