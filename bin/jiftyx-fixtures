@@ -9,8 +9,8 @@ BEGIN {
     name    => "jiftyx-fixtures",
     version => $JiftyX::Fixtures::VERSION,
     struct  => [
-      [ [qw(d drop-database)],  qq{drop database before loading fixtures}, "=s" ],
-      [ [qw(e environment)],    qq{specify which fixtures mode would be used}, "=s" ],
+      [ [qw(d drop-database)],  qq{drop database before loading fixtures, default is true}, "=s" ],
+      [ [qw(e environment)],    qq{specify which fixtures mode would be used, default is development}, "=s" ],
     ],
   )->opts();
 
