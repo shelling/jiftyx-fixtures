@@ -1,28 +1,6 @@
 #!/usr/bin/env perl
 
-use Getopt::Compact;
-use Data::Dumper;
 use JiftyX::Fixtures;
 
-BEGIN {
-  my $opts = Getopt::Compact->new( 
-    name    => "jiftyx-fixtures",
-    version => $JiftyX::Fixtures::VERSION,
-    struct  => [
-      [ [qw(d drop-database)],  qq{drop database before loading fixtures, default is true}, "=s" ],
-      [ [qw(e environment)],    qq{specify which fixtures mode would be used, default is development}, "=s" ],
-    ],
-  )->opts();
-
-  my $jf = JiftyX::Fixtures->new(
-    execution => {
-      environment     => $opts->{environment},
-      'drop-database' => $opts->{"drop-database"},
-    }
-  );
-
-  Jifty->new;
-
-  $jf->run;
-}
+BEGIN { JiftyX::Fixtures->new->run }
 

@@ -9,18 +9,12 @@ BEGIN {
   require_ok "JiftyTest";
 }
 
-my $j = JiftyX::Fixtures->new(
-  execution => {
-    environment       => "test",
-    'drop-database'   => "true",
-  }
-);
+my $j = JiftyX::Fixtures->new;
 
-is($j->app_root, abs_path( dirname(__FILE__) ), $j->app_root);
+is($j->config("app_root"), abs_path( dirname(__FILE__) ), $j->config("app_root") );
 
 is($j->config("fixtures")->{test}->{dir}, "/etc/fixtures/test");
 
 is($j->config("framework")->{Database}->{Database}, "jiftytest");
 is($j->config("framework")->{Database}->{Driver}, "SQLite");
 
-is($j->config("execution")->{environment}, "test");
