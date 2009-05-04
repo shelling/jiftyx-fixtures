@@ -18,8 +18,8 @@ sub options {
   my ($self) = @_;
   return (
     $self->SUPER::options,
-    'drop-database=s' => 'drop-database',
-    'environment=s'   => 'environment',
+    'd|drop-database=s' => 'drop-database',
+    'e|environment=s'   => 'environment',
   );
 }
 
@@ -56,7 +56,20 @@ sub drop_db {
 
 sub run {
   my ($self) = @_;
+
+  if ($self->{help}) {
+    print qq{
+jiftyx-fixtures load [options]
+OPTIONS:
+  --drop-database:    [-d] drop database before loading fixtures, default is true
+  --environment:      [-e] specify environment, default is development
+  --help:             [-h] show help
+    \n};
+    return;
+  }
+
   $self->{environment} ||= "development";
+  $self->{'drop-database'} ||= "true";
 
   $self->drop_db if ($self->{"drop-database"} eq "true");
 
