@@ -59,8 +59,14 @@ sub run {
 
   if ($self->{help}) {
     print qq{
-jiftyx-fixtures load [options]
-OPTIONS:
+jiftyx-fixtures v$JiftyX::Fixtures::VERSION
+
+Usage:
+
+  jiftyx-fixtures load [options]
+
+Options:
+
   --drop-database:    [-d] drop database before loading fixtures, default is true
   --environment:      [-e] specify environment, default is development
   --help:             [-h] show help

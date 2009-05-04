@@ -2,5 +2,8 @@
 
 use JiftyX::Fixtures;
 
-BEGIN { JiftyX::Fixtures->new->run }
+BEGIN { 
+  unshift @ARGV, "help" if $ARGV[0] eq "";
+  JiftyX::Fixtures->new->run 
+}
 

@@ -15,9 +15,11 @@ use JiftyX::Fixtures::Script;
 sub new {
   my $self = bless {}, shift;
 
-  $self->{config}->{app_root} = Jifty::Util->app_root;
+  $self->{config}->{app_root}   = Jifty::Util->app_root;
   $self->{config}->{framework}  = Jifty->config->stash->{framework};
-  $self->{config}->{fixtures}   = LoadFile( $self->{config}->{app_root} . "/etc/fixtures.yml");
+
+  my $fixtures_config = $self->{config}->{app_root} . "/etc/fixtures.yml";
+  $self->{config}->{fixtures}   = LoadFile($fixtures_config) if (-e $fixtures_config);
 
   $self;
 }
