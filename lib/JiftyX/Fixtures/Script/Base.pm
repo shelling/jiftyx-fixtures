@@ -1,4 +1,6 @@
 package JiftyX::Fixtures::Script::Base;
+# ABSTRACT: Base package of all subcommands, should not run it
+
 use warnings;
 use strict;
 

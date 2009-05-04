@@ -1,4 +1,6 @@
 package JiftyX::Fixtures::Script::Load;
+# ABSTRACT: load subcommands, primary function of JiftyX::Fixtures
+
 use warnings;
 use strict;
 

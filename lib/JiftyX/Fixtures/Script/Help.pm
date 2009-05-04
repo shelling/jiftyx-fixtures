@@ -1,4 +1,6 @@
 package JiftyX::Fixtures::Script::Help;
+# ABSTRACT: help subcommands
+
 use warnings;
 use strict;
 
