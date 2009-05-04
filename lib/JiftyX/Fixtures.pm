@@ -44,12 +44,23 @@ sub run {
 
 =head1 SYNOPSIS
 
+    JiftyX::Fixtures->new->config(
+      fixtures => [
+        development => {
+          dir => "etc/fixtures/development"
+        }
+      ]
+    )->run;
+
 
 =head1 DESCRIPTION
 
+WARNING: This software is stil in alpha stage, any intense variation is possible.
+
+Load pre-defined fixture from specified mode, and Insert it into you Jifty application database.
+
 
 =head1 METHODS
-
 
 =head2 new
 
@@ -57,7 +68,7 @@ Constructor, invoke without args
 
 =head2 config
 
-Give one arg which is selected from "app_root", "framework", "fixtures", "execution" to get the configuration detail.
+Give one arg which is selected from "app_root", "framework", "fixtures" to get the configuration detail.
 
 Append second arg to set the configuration.
 
@@ -76,5 +87,5 @@ Append second arg to set the configuration.
 
 =head2 run
 
-Running script
+Running
 
