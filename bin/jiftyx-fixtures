@@ -3,7 +3,7 @@
 use JiftyX::Fixtures;
 
 BEGIN { 
-  unshift @ARGV, "help" if $ARGV[0] eq "";
-  JiftyX::Fixtures->new->run 
+  $ARGV[0] ||= "help";
+  JiftyX::Fixtures->new->run;
 }
 
