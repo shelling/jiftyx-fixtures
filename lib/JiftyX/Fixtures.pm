@@ -35,7 +35,9 @@ sub config {
 }
 
 sub run { 
-  my $self = shift;
+  my ($self, $subcommand) = @_;
+  $subcommand ||= "load";
+  unshift @ARGV, $subcommand unless defined($ARGV[0]);
   JiftyX::Fixtures::Script->dispatch( config => $self->{config} );
 }
   
@@ -55,7 +57,7 @@ sub run {
 
 =head1 DESCRIPTION
 
-WARNING: This software is stil in alpha stage, any intense variation is possible.
+    WARNING: This software is stil in alpha stage, any intense variation is possible.
 
 Load pre-defined fixture from specified mode, and Insert it into you Jifty application database.
 
@@ -87,5 +89,5 @@ Append second arg to set the configuration.
 
 =head2 run
 
-Running
+Running subcommand, default is "load". Give one arg to specify which subcommand would be run.
 
