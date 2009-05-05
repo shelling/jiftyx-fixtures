@@ -7,6 +7,7 @@ use strict;
 use Jifty;
 use Jifty::Everything;
 
+use IO::File;
 use File::Spec;
 use File::Basename;
 use YAML qw(Dump LoadFile);
@@ -20,6 +21,7 @@ sub options {
   my ($self) = @_;
   (
     $self->SUPER::options,
+    'e|environment=s' => "environment",
   );
 }
 
@@ -40,8 +42,25 @@ sub run {
 
   for my $model (@models) {
     $model =~ s/\.pm//g;
-    my %columns =  map { $_->name() => "" } Jifty->app_class("Model",$model)->columns;
-    print Dump [\%columns];
+    my %columns =  map { $_->name() => undef } Jifty->app_class("Model",$model)->columns;
+
+    my $filename = File::Spec->catfile(
+      $self->{config}->{app_root},
+      $self->{config}->{fixtures}->{$self->{environment}}->{dir},
+      "$model.yml"
+    );
+
+    print $filename,"\n";
+
+    my $file = IO::File->new ;
+    if (defined $file->open("> $filename") ) {
+      print $file "-\n";
+      for my $c (map {$_->name()} Jifty->app_class("Model",$model)->columns) {
+        print $file "  $c:\n";
+      }
+      $file->close;
+    }
+
   }
 
 }
