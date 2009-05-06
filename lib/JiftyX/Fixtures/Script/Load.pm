@@ -1,5 +1,5 @@
 package JiftyX::Fixtures::Script::Load;
-# ABSTRACT: load subcommands, primary function of JiftyX::Fixtures
+# ABSTRACT: load subcommand, primary function of this module
 
 use warnings;
 use strict;
@@ -17,6 +17,19 @@ use base qw(
 
 my $super = 'JiftyX::Fixtures::Script';
 
+our $help_msg = qq{
+Usage:
+
+  jiftyx-fixtures load [options]
+
+Options:
+
+  -d, --drop-database:      drop database before loading fixtures, default is true
+  -e, --environment:        specify environment, default is development
+  -h, --help:               show help
+
+};
+
 sub options {
   my ($self) = @_;
   return (
@@ -29,7 +42,7 @@ sub options {
 sub before_run {
   my ($self) = @_;
 
-  $super->run;
+  $super->before_run($self);
 
   $self->{environment} ||= "development";
   $self->{'drop-database'} ||= "true";
@@ -41,23 +54,6 @@ sub before_run {
 sub run {
   my ($self) = @_;
   $self->before_run();
-
-  if ($self->{help}) {
-    print qq{
-jiftyx-fixtures v$JiftyX::Fixtures::VERSION
-
-Usage:
-
-  jiftyx-fixtures load [options]
-
-Options:
-
-  --drop-database:    [-d] drop database before loading fixtures, default is true
-  --environment:      [-e] specify environment, default is development
-  --help:             [-h] show help
-    \n};
-    return;
-  }
 
   Jifty->new;
 

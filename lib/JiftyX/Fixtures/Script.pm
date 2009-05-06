@@ -8,16 +8,25 @@ use App::CLI;
 use base qw(App::CLI App::CLI::Command);
 
 sub options {
-  my ($self) = caller;
   return (
     'h|help|?'  => 'help',
     'man'     => 'man',
   );
 }
 
+sub before_run {
+  my ($here, $self) = @_;
+
+  if ($self->{help}) {
+    print "jiftyx-fixtures v$JiftyX::Fixtures::VERSION\n";
+    eval 'print $' . ref($self) . '::help_msg';
+    exit;
+  }
+
+}
+
 sub run {
-  my ($self) = caller;
-  print "INFO - run " . $self . "\n";
+  my ($here, $self) = @_;
 }
 
 

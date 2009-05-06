@@ -18,6 +18,19 @@ use base qw(
 
 my $super = 'JiftyX::Fixtures::Script';
 
+our $help_msg = qq{
+Usage:
+
+  jiftyx-fixtures scaffold [options]
+
+Options:
+
+  -e, --environment:        specify environment, default is development
+  -h, --help:               show help
+  --man                     man page
+
+};
+
 sub options {
   my ($self) = @_;
   (
@@ -29,7 +42,7 @@ sub options {
 sub before_run {
   my ($self) = @_;
 
-  $super->run;
+  $super->before_run($self);
 
   $self->{environment} ||= "development";
 
