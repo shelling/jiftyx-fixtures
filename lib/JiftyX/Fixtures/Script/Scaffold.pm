@@ -55,21 +55,40 @@ sub run {
 
   Jifty->new;
 
-  for my $model ($self->model_list) {
-    # my %columns =  map { $_->name() => undef } Jifty->app_class("Model",$model)->columns;
+  for my $env (keys %{$self->{config}->{fixtures}}) {
 
-    my $filename = $self->fixtures_filename($model, "yml");
-    my $file = IO::File->new ;
-    if (defined $file->open("> $filename") ) {
-      print $file "-\n";
-      for my $c (Jifty->app_class("Model",$model)->columns) {
-        print $file "  " . $c->name . ":\n" if $c->{writable};
+    my $dir = File::Spec->catfile(
+      $self->{config}->{app_root},
+      $self->{config}->{fixtures}->{$env}->{dir}
+    );
+    mkdir $dir unless (-e $dir);
+
+
+    for my $model ($self->model_list) {
+      my $filename = $self->fixtures_filename($env ,$model, "yml");
+      my $file = IO::File->new ;
+      if (defined $file->open("> $filename") ) {
+        print $file $self->render_scaffold(Jifty->app_class("Model",$model)->columns);
+        $file->close;
       }
-      $file->close;
     }
 
   }
 
+}
+
+sub render_scaffold {
+  my ($self, @columns) = @_;
+  my $result = "-\n";
+  for (@columns) {
+    $result .= "  " . $_->name . ":\n" if $_->{writable};
+  }
+  my $header = $result;
+  $header =~ s/^/#/g;
+  $header =~ s/\n/\n#/g;
+  $header =~ s/#$//g;
+
+  $header . $result;
 }
 
 sub model_list {
@@ -90,10 +109,10 @@ sub model_list {
 }
 
 sub fixtures_filename {
-  my ($self, $model, $format) = @_;
+  my ($self, $environment, $model, $format) = @_;
   return File::Spec->catfile(
       $self->{config}->{app_root},
-      $self->{config}->{fixtures}->{$self->{environment}}->{dir},
+      $self->{config}->{fixtures}->{$environment}->{dir},
       "$model.$format"
   );
 }
