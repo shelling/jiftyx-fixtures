@@ -7,6 +7,7 @@ use strict;
 use Jifty;
 use Jifty::Everything;
 
+use IO::File;
 use File::Basename;
 use File::Spec;
 use YAML qw(Dump LoadFile);
@@ -25,6 +26,19 @@ Usage:
 Options:
 
   -h, --help:               show help
+
+};
+
+my $prototype = qq{
+development:
+  dir: "etc/fixtures/development"
+  format: "yml"
+  greeking: "false"
+
+test:
+  dir: "etc/fixtures/test"
+  format: "yml"
+  greeking: "false"
 
 };
 
@@ -48,9 +62,14 @@ sub run {
   $self->before_run();
   
   unless ($self->{config}->{fixtures}) {
-    print "init...";
+
+    my $fixtures_config = IO::File->new;
+    if ($fixtures_config->open("> " . $self->{config}->{app_root} . "/etc/fixtures.yml")) {
+      print $fixtures_config $prototype;
+    }
+
+    mkdir $self->{config}->{app_root} . "/etc/fixtures";
   }
 }
-
 
 1;
