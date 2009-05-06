@@ -13,22 +13,27 @@ use File::Basename;
 use YAML qw(Dump LoadFile);
 
 use base qw(
-  JiftyX::Fixtures::Script::Base
   App::CLI::Command
 );
+
+my $super = 'JiftyX::Fixtures::Script';
 
 sub options {
   my ($self) = @_;
   (
-    $self->SUPER::options,
+    $super->options,
     'e|environment=s' => "environment",
   );
 }
 
 sub before_run {
   my ($self) = @_;
-  print "INFO - run " . ref($self) ."\n";
+
+  $super->run;
+
   $self->{environment} ||= "development";
+
+  return;
 }
 
 sub run {

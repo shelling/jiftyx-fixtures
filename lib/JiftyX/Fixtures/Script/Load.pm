@@ -12,55 +12,30 @@ use File::Spec;
 use YAML qw(Dump LoadFile);
 
 use base qw(
-  JiftyX::Fixtures::Script::Base
   App::CLI::Command
 );
+
+my $super = 'JiftyX::Fixtures::Script';
 
 sub options {
   my ($self) = @_;
   return (
-    $self->SUPER::options,
+    $super->options,
     'd|drop-database=s' => 'drop-database',
     'e|environment=s'   => 'environment',
   );
 }
 
-sub fixtures_files {
-  my $self = shift;
-  return glob(
-    File::Spec->catfile(
-      $self->{config}->{app_root},
-      "etc",
-      "fixtures",
-      $self->{environment},
-      "*"
-    )
-  );
-}
-
-sub drop_db {
-  my $self = shift;
-  my $dbconfig = $self->{config}->{framework}->{Database};
-
-  if ( $dbconfig->{Driver} eq "SQLite" && -e $dbconfig->{Database} ) {
-    print "WARN - SQLite Database has existed, delete file now.\n";
-    unlink $dbconfig->{Database};
-  }
-
-  if ($dbconfig->{Driver} eq "MySQL") {
-    print "WARN - MySQL Database has existed, delete file now.\n";
-    unlink $dbconfig->{Database};
-    my $dbh = DBI->connect("dbi:mysql:database=".$dbconfig->{Database}, $dbconfig->{User}, $dbconfig->{Password});
-    $dbh->prepare("drop database ". $dbconfig->{Database});
-    $dbh->disconnect;
-  }
-}
-
 sub before_run {
   my ($self) = @_;
+
+  $super->run;
+
   $self->{environment} ||= "development";
   $self->{'drop-database'} ||= "true";
   $self->drop_db() if ($self->{"drop-database"} eq "true");
+
+  return;
 }
 
 sub run {
@@ -97,6 +72,37 @@ Options:
     for my $entity (@{ $fixtures }) {
       $model->create( %{$entity} );
     }
+  }
+}
+
+sub fixtures_files {
+  my $self = shift;
+  return glob(
+    File::Spec->catfile(
+      $self->{config}->{app_root},
+      "etc",
+      "fixtures",
+      $self->{environment},
+      "*"
+    )
+  );
+}
+
+sub drop_db {
+  my $self = shift;
+  my $dbconfig = $self->{config}->{framework}->{Database};
+
+  if ( $dbconfig->{Driver} eq "SQLite" && -e $dbconfig->{Database} ) {
+    print "WARN - SQLite Database has existed, delete file now.\n";
+    unlink $dbconfig->{Database};
+  }
+
+  if ($dbconfig->{Driver} eq "MySQL") {
+    print "WARN - MySQL Database has existed, delete file now.\n";
+    unlink $dbconfig->{Database};
+    my $dbh = DBI->connect("dbi:mysql:database=".$dbconfig->{Database}, $dbconfig->{User}, $dbconfig->{Password});
+    $dbh->prepare("drop database ". $dbconfig->{Database});
+    $dbh->disconnect;
   }
 }
 
