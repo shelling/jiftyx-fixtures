@@ -4,6 +4,8 @@ package JiftyX::Fixtures;
 use strict;
 use warnings;
 
+use UNIVERSAL::dump;
+
 use Jifty;
 use Jifty::Everything;
 use Jifty::Util;

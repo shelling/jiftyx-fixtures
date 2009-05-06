@@ -27,7 +27,7 @@ sub options {
 
 sub fixtures_files {
   my $self = shift;
-  glob(
+  return glob(
     File::Spec->catfile(
       $self->{config}->{app_root},
       "etc",
@@ -56,8 +56,16 @@ sub drop_db {
   }
 }
 
+sub before_run {
+  my ($self) = @_;
+  $self->{environment} ||= "development";
+  $self->{'drop-database'} ||= "true";
+  $self->drop_db() if ($self->{"drop-database"} eq "true");
+}
+
 sub run {
   my ($self) = @_;
+  $self->before_run();
 
   if ($self->{help}) {
     print qq{
@@ -76,15 +84,7 @@ Options:
     return;
   }
 
-  $self->{environment} ||= "development";
-  $self->{'drop-database'} ||= "true";
-
-  $self->drop_db if ($self->{"drop-database"} eq "true");
-
-  eval qq{
-    package main;
-    Jifty->new;
-  };
+  Jifty->new;
 
   for ($self->fixtures_files) {
     my $filename = basename($_);
