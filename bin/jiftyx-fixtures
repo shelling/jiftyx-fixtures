@@ -11,3 +11,28 @@ BEGIN {
   JiftyX::Fixtures->new->run;
 }
 
+__END__
+
+=head1 NAME
+
+    jiftyx-fixtures
+
+=head1 SYNOPSIS
+
+    $ jiftyx-fixtures init
+
+    $ vi etc/fixtures.yml
+
+    $ jiftyx-fixtures scaffold
+
+    $ vi etc/fixtures/development.yml
+
+    $ jiftyx-fixtures load
+
+=head1 DESCRIPTION
+
+    load fixtures into Jifty application through command line
+
+=head1 AUTHOR
+  
+    shelling <shelling@cpan.org>
