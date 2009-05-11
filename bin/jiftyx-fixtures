@@ -33,6 +33,12 @@ __END__
 
     load fixtures into Jifty application through command line
 
+=head1 SEE ALSO
+
+    http://github.com/shelling/jiftyx-fixtures/tree/master
+
+    http://search.cpan.org/~shelling/JiftyX-Fixtures/
+
 =head1 AUTHOR
   
     shelling <shelling@cpan.org>
